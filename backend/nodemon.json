@@ -1,0 +1,7 @@
+{
+  "restartable": "rs",
+  "exec": "npm run dev",
+  "watch": ["server/*", "public/*"],
+  "ignore": ["**/__tests__/**", "*.test.js", "*.spec.js"],
+  "ext": "js"
+}
