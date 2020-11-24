@@ -15,7 +15,11 @@ const app = express();
 app.use(cors());
 
 // logging
-app.use(morgan("dev"));
+app.use(morgan("combined", {
+  skip: (req, res) => {
+    return req.app.get("env") === "test";
+  },
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -25,21 +29,23 @@ app.use(express.static(path.join(__dirname, "../public")));
 app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function (err, req, res, next) {
-  let message = "Caught some errors";
-  if (req.app.get("env") === "development" || err.status < 500) {
-    // 404, 400,
-    message = err.message;
+app.use((err, req, res, next) => {
+  if (req.app.get("env") !== "test") {
+    console.log(err);
   }
 
-  console.log(err);
+  let errorMsg = "Caught some errors";
+  if (req.app.get("env") === "development" || err.status < 500) {
+    // 404, 400,
+    errorMsg = err.message;
+  }
 
-  res.status(err.status || 500).send({ message });
+  res.status(err.status || 500).send({ errorMsg });
 });
 
 export default app;
