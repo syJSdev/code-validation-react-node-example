@@ -6,7 +6,7 @@ import Card from 'react-bootstrap/Card';
 import CodeInput from 'components/CodeInput';
 import validate from 'utils/validate';
 import api from 'utils/api';
-import { CODE_LENGTH } from 'constants/index';
+import { CODE_LENGTH } from 'constants/values';
 
 const errorInit = {
   error: false,

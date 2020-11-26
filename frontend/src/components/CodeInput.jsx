@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
+import { EMPTY_CHAR } from 'constants/values';
 import DigitInput from './DigitInput';
 
 const getString = (val) => {
@@ -17,7 +18,7 @@ const getString = (val) => {
 
 const CodeInput = React.memo(({ length, onChange, value, error }) => {
   const codeLocal = useRef(value);
-  const code = useMemo(() => getString(value).slice(0, length).padEnd(length, '*'), [length, value]);
+  const code = useMemo(() => getString(value).slice(0, length).padEnd(length, EMPTY_CHAR), [length, value]);
   const inputRefs = useMemo(
     () =>
       Array(length)
@@ -47,7 +48,7 @@ const CodeInput = React.memo(({ length, onChange, value, error }) => {
         codes[id] = val;
       } else {
         if (backWhenEmpty) nextIndex = id - 1;
-        codes[id] = '*';
+        codes[id] = EMPTY_CHAR;
       }
 
       if (nextIndex >= 0 && inputRefs[nextIndex] && inputRefs[nextIndex].current) {
@@ -103,7 +104,7 @@ const CodeInput = React.memo(({ length, onChange, value, error }) => {
               autoFocus={index === 0}
               index={index.toString()}
               inputRef={inputRefs[index]}
-              value={c === '*' || !c ? '' : c}
+              value={c === EMPTY_CHAR || !c ? '' : c}
               onChange={handleChange}
               changeFocus={changeFocus}
               isInvalid={!!(error && error.error && error.detail && error.detail[index])}

@@ -2,12 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
-
-const BACKSPACE_KEY = 8;
-const LEFT_ARROW_KEY = 37;
-const RIGHT_ARROW_KEY = 39;
-
-const filterKeyCodes = [38, 40, 189, 190];
+import { KEY_CODE_BLOCK_LIST, BACKSPACE_KEY, LEFT_ARROW_KEY, RIGHT_ARROW_KEY } from 'constants/values';
 
 const validateCode = (code) => {
   if (code === undefined || code === null || code === '') return false;
@@ -69,7 +64,7 @@ const DigitInput = React.memo(
     const handleKeyDown = useCallback(
       (event) => {
         const target = Number(event.target.id);
-        if (filterKeyCodes.includes(event.keyCode)) {
+        if (KEY_CODE_BLOCK_LIST.includes(event.keyCode)) {
           event.preventDefault();
           return;
         }

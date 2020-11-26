@@ -1,3 +1,5 @@
+import { EMPTY_CHAR } from 'constants/values';
+
 const validate = (code, codeLength) => {
   if (!code)
     return {
@@ -12,12 +14,12 @@ const validate = (code, codeLength) => {
       detail: Array(codeLength).fill('Invalid'),
     };
   const res = code
-    .padEnd(codeLength, '*')
+    .padEnd(codeLength, EMPTY_CHAR)
     .split('')
     .reduce(
       (acc, cur, index) => {
         const detailClone = [...acc.detail];
-        if (cur === '*') {
+        if (cur === EMPTY_CHAR) {
           detailClone[index] = 'Required';
           return { ...acc, error: true, detail: detailClone, message: 'Verification Error' };
         }
