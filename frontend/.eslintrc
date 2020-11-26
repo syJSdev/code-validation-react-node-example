@@ -8,21 +8,15 @@
     "node": true,
     "es6": true
   },
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
   "settings": {
-    "import/extensions": [".js", ".jsx"],
     "import/resolver": {
-      "node": {
-        "moduleDirectory": [
-          "node_modules",
-          "src/"
-        ]
+      "alias": {
+        "map": [
+          ["components", "./src/components"],
+          ["constants", "./src/constants"],
+          ["utils", "./src/utils"]
+        ],
+        "extensions": [".js", ".jsx"]
       }
     }
   },

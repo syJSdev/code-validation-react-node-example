@@ -1,37 +1,37 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import Form from 'react-bootstrap/Form';
+import React, { useCallback } from 'react';
+import { Route, Link, Switch, Redirect, useHistory } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
-import { CodeInput } from 'components';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import { VerficationBox } from 'components';
 
-function App() {
-  const [code, setCode] = useState('');
+const App = () => {
+  const history = useHistory();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
+  const handleSuccess = useCallback(() => {
+    history.push('/success');
+  }, [history]);
 
   return (
-    <div className="App">
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>
-            <h3>Verification Code</h3>
-          </Form.Label>
-          <Form.Control as="div">
-            <CodeInput value={code} onChange={setCode} length={6} />
-          </Form.Control>
-          {/* <Form.Text className="text-muted"></Form.Text> */}
-        </Form.Group>
-        <Form.Group controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Check me out" />
-        </Form.Group>
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
-    </div>
+    <Container>
+      <Switch>
+        <Route exact path="/validation">
+          <VerficationBox onSuccess={handleSuccess} />
+        </Route>
+        <Route exact path="/success">
+          <Card style={{ width: '32rem', margin: '120px auto' }}>
+            <Card.Body className="text-center">
+              <h3>Success</h3>
+              <Button as={Link} to="/validation" variant="outline-secondary" className="text-uppercase">
+                Retry
+              </Button>
+            </Card.Body>
+          </Card>
+        </Route>
+        <Redirect to="/validation" />
+      </Switch>
+    </Container>
   );
-}
+};
 
 export default App;
