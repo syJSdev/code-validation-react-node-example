@@ -1,4 +1,4 @@
-export const CODE_LENGTH = process.env.CODE_LENGTH || 6;
+export const CODE_LENGTH = (process.env.CODE_LENGTH || 6) < 3 ? 3 : process.env.CODE_LENGTH || 6;
 
 export const BACKSPACE_KEY = 8;
 export const LEFT_ARROW_KEY = 37;

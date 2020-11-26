@@ -29,6 +29,7 @@
   },
   "rules": {
     "prettier/prettier": 2,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "no-console": 0
   }
 }

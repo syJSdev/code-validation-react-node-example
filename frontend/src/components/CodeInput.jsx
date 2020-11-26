@@ -1,6 +1,5 @@
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useMemo, useCallback, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import Form from 'react-bootstrap/Form';
 import { EMPTY_CHAR } from 'constants/values';
 import DigitInput from './DigitInput';
 
@@ -16,8 +15,7 @@ const getString = (val) => {
   return ret;
 };
 
-const CodeInput = React.memo(({ length, onChange, value, error }) => {
-  const codeLocal = useRef(value);
+const CodeInput = React.memo(({ length, onChange, value, errors }) => {
   const code = useMemo(() => getString(value).slice(0, length).padEnd(length, EMPTY_CHAR), [length, value]);
   const inputRefs = useMemo(
     () =>
@@ -26,6 +24,13 @@ const CodeInput = React.memo(({ length, onChange, value, error }) => {
         .map(() => React.createRef()),
     [length]
   );
+  const codeLocal = useRef(code);
+
+  useEffect(() => {
+    // fire onChange with formated code when component mounted.
+    onChange(code);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // change focus
   const triggerChange = useCallback(
@@ -37,7 +42,11 @@ const CodeInput = React.memo(({ length, onChange, value, error }) => {
       const codes = oldValue.split('');
 
       if (val.length > 1) {
-        nextIndex = val.length + id - 1;
+        if (val.length > length) {
+          nextIndex = length + id - 1;
+        } else {
+          nextIndex = val.length + id - 1;
+        }
         val.split('').forEach((digit, i) => {
           if (id + i < length) {
             codes[id + i] = digit;
@@ -56,9 +65,13 @@ const CodeInput = React.memo(({ length, onChange, value, error }) => {
         inputRefs[nextIndex].current.select();
       }
 
-      console.log('prev: ', codeLocal.current);
+      const prev = codeLocal.current;
       codeLocal.current = codes.join('');
+      console.log('prev: ', prev);
       console.log('next: ', codeLocal.current);
+
+      if (prev === codeLocal.current) return;
+
       onChange(codeLocal.current);
     },
     [inputRefs, length, onChange]
@@ -93,53 +106,38 @@ const CodeInput = React.memo(({ length, onChange, value, error }) => {
   );
 
   return (
-    <Form.Group>
-      <div className="d-flex align-items-stretch justify-content-center">
-        {code &&
-          typeof code === 'string' &&
-          code.split('').map((c, index) => (
-            /* eslint-disable react/no-array-index-key */
-            <DigitInput
-              key={index}
-              autoFocus={index === 0}
-              index={index.toString()}
-              inputRef={inputRefs[index]}
-              value={c === EMPTY_CHAR || !c ? '' : c}
-              onChange={handleChange}
-              changeFocus={changeFocus}
-              isInvalid={!!(error && error.error && error.detail && error.detail[index])}
-              maxLength={length - index}
-            />
-            /* eslint-enable react/no-array-index-key */
-          ))}
-      </div>
-      {error && error.error && error.message && (
-        <Form.Control.Feedback className="d-block" type="invalid">
-          {error.message}
-        </Form.Control.Feedback>
-      )}
-    </Form.Group>
+    <div className="d-flex align-items-stretch justify-content-center">
+      {code &&
+        typeof code === 'string' &&
+        code.split('').map((c, index) => (
+          /* eslint-disable react/no-array-index-key */
+          <DigitInput
+            key={index}
+            autoFocus={index === 0}
+            index={index.toString()}
+            inputRef={inputRefs[index]}
+            value={c === EMPTY_CHAR || !c ? '' : c}
+            onChange={handleChange}
+            changeFocus={changeFocus}
+            isInvalid={!!(errors && errors[index])}
+            maxLength={length - index}
+          />
+          /* eslint-enable react/no-array-index-key */
+        ))}
+    </div>
   );
 });
 
 CodeInput.defaultProps = {
   value: '',
-  error: {
-    error: false,
-    detail: [],
-    message: null,
-  },
+  errors: [],
 };
 
 CodeInput.propTypes = {
   length: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  error: PropTypes.shape({
-    error: PropTypes.bool,
-    detail: PropTypes.arrayOf(PropTypes.string),
-    message: PropTypes.string,
-  }),
+  errors: PropTypes.arrayOf(PropTypes.string),
 };
 
 export default CodeInput;

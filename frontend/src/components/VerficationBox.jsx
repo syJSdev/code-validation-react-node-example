@@ -4,9 +4,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import CodeInput from 'components/CodeInput';
-import validate from 'utils/validate';
-import api from 'utils/api';
 import { CODE_LENGTH } from 'constants/values';
+import validate from 'utils/validate';
+import { checkCode } from 'utils/api';
 
 const errorInit = {
   error: false,
@@ -33,8 +33,7 @@ const VerficationBox = ({ onSuccess }) => {
         return;
       }
 
-      api
-        .post('/validate', { code })
+      checkCode(code)
         .then(() => {
           onSuccess();
         })
@@ -54,12 +53,20 @@ const VerficationBox = ({ onSuccess }) => {
     [code, onSuccess]
   );
 
+  const errors = error && error.error && error.detail ? error.detail : [];
+  const message = error && error.error ? error.message : undefined;
+
   return (
     <Card style={{ width: '32rem', margin: '120px auto' }}>
       <Card.Body>
         <h3 className="text-center">Verification Code</h3>
         <Form onSubmit={handleSubmit}>
-          <CodeInput value={code} onChange={handleChange} error={error} length={CODE_LENGTH} />
+          <Form.Group>
+            <CodeInput value={code} onChange={handleChange} errors={errors} length={CODE_LENGTH} />
+            <Form.Control.Feedback type="invalid" hidden={!message} style={{ display: 'block' }}>
+              {message}
+            </Form.Control.Feedback>
+          </Form.Group>
           <Button block variant="outline-primary" type="submit" className="text-uppercase">
             Submit
           </Button>

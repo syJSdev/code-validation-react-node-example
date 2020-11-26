@@ -5,27 +5,27 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --verbose",
     "eject": "react-scripts eject",
     "lint:fix": "eslint --quiet --fix .",
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
+    "history": "^5.0.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
     "styled-components": "^5.2.1",
     "web-vitals": "^0.2.4"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "eslint": "^7.14.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^6.11.0",
@@ -38,6 +38,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^8.1.5",
     "prettier": "^2.0.5",
+    "react-scripts": "4.0.1",
     "react-test-renderer": "^17.0.1"
   },
   "husky": {

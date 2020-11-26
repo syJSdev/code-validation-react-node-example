@@ -28,34 +28,32 @@ const DigitInput = React.memo(
     const touched = useRef(false);
 
     // validation
-    const validate = useCallback(
-      (character) => {
-        if (!touched) return;
-        if (touched.current === false && !value) return;
+    const validate = useCallback((character) => {
+      if (!touched) return;
+      console.log(touched.current, character);
+      if (touched.current === false && !character) return;
 
-        setError(!validateCode(character));
-      },
-      [value]
-    );
-
-    useEffect(() => {
-      validate(value);
-    }, [value, validate]);
+      setError(!validateCode(character));
+    }, []);
 
     useEffect(() => {
       setError(isInvalid);
     }, [isInvalid]);
 
+    useEffect(() => {
+      validate(value);
+    }, [value, validate]);
+
     // the event handlers
     const handleFocus = useCallback((event) => {
+      console.log(event);
       event.target.select();
-
-      if (!touched) return;
       touched.current = true;
     }, []);
 
     const handleBlur = useCallback(
       (event) => {
+        console.log(event);
         validate(value);
       },
       [validate, value]

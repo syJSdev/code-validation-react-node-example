@@ -7,7 +7,6 @@ import { VerficationBox } from 'components';
 
 const App = () => {
   const history = useHistory();
-
   const handleSuccess = useCallback(() => {
     history.push('/success');
   }, [history]);
