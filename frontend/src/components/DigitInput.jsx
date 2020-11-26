@@ -51,7 +51,7 @@ const DigitInput = React.memo(
       setError(isInvalid);
     }, [isInvalid]);
 
-    // the handler of focus change
+    // the event handlers
     const handleFocus = useCallback((event) => {
       event.target.select();
 
@@ -107,7 +107,8 @@ const DigitInput = React.memo(
         size="lg"
         maxLength={maxLength}
         value={value}
-        onChange={onChange}
+        // onChange event is not fired when input the same digit
+        onInput={onChange}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
