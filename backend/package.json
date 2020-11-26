@@ -13,7 +13,7 @@
     "clean": "rimraf build",
     "watch:dev": "nodemon",
     "test": "cross-env NODE_ENV=test jest",
-    "lint": "eslint --quiet --fix",
+    "lint:fix": "eslint --quiet --fix .",
     "format": "prettier --write ."
   },
   "repository": {

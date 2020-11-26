@@ -4,33 +4,10 @@
  * Module dependencies.
  */
 
-import app from '../app';
-import debugLib from 'debug';
-import http from 'http';
-const debug = debugLib('code-validate-react-node:server');
-
-/**
- * Get port from environment and store in Express.
- */
-
-var port = normalizePort(process.env.PORT || "3000");
-app.set("port", port);
-
-/**
- * Create HTTP server.
- */
-
-var server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port, () => {
-  console.log("Server listen on port", port);
-});
-server.on("error", onError);
-server.on("listening", onListening);
+import app from "../app";
+import debugLib from "debug";
+import http from "http";
+const debug = debugLib("code-validate-react-node:server");
 
 /**
  * Normalize a port into a number, string, or false.
@@ -50,7 +27,7 @@ const normalizePort = (val) => {
   }
 
   return false;
-}
+};
 
 /**
  * Event listener for HTTP server "error" event.
@@ -74,7 +51,7 @@ const onError = (error) => {
     default:
       throw error;
   }
-}
+};
 
 /**
  * Event listener for HTTP server "listening" event.
@@ -84,4 +61,27 @@ const onListening = () => {
   var addr = server.address();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   debug("Listening on " + bind);
-}
+};
+
+/**
+ * Get port from environment and store in Express.
+ */
+
+var port = normalizePort(process.env.PORT || "3000");
+app.set("port", port);
+
+/**
+ * Create HTTP server.
+ */
+
+var server = http.createServer(app);
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port, () => {
+  console.log("Server listen on port", port);
+});
+server.on("error", onError);
+server.on("listening", onListening);
